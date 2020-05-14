@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 
-// Replace with a cluster with latency to see effect (ex. Atlas)
+// Replace with a location with latency to see effect (ex. Atlas)
 const DB_URI = "mongodb://localhost:27017/";
 
 mongoose.connection.on("connecting", () => {
@@ -24,6 +24,12 @@ mongoose
     console.log("Connected promise fired!");
   });
 
-app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) => {
+  // If you give it enough time (ex. bumping the timeout from 0ms to 1000ms),
+  // the connection promise has enough time to resolve and everything works as expected.
+  setTimeout(() => {
+    res.send("Hello World!");
+  }, 0);
+});
 
 module.exports = app;
